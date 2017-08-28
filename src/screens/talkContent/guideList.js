@@ -15,9 +15,10 @@ import Slider from 'react-native-slider'
 import {
   Player
 } from 'react-native-audio-toolkit'
+import AudioList from './audiolist'
 
 const { width } = Dimensions.get('window')
-let margin = Number(( width * 0.04).toFixed())
+let margin = Number((width * 0.04).toFixed())
 
 const audioUrl1 = 'https://firebasestorage.googleapis.com/v0/b/talktek-4edac.appspot.com/o/1.a%20%E4%BB%80%E9%BA%BC%E6%98%AF%E3%80%8C%E7%9F%A5%E8%AD%98%E5%9E%8B%E7%B6%B2%E7%B4%85%E3%80%8D_.m4a?alt=media&token=999614d4-4a10-47df-85fc-d1d96df27063'
 const audioUrl2 = 'https://firebasestorage.googleapis.com/v0/b/talktek-4edac.appspot.com/o/2.a%20%E5%85%88%E5%95%8F%E5%95%8F%E8%87%AA%E5%B7%B1%EF%BC%8C%E4%BD%A0%E7%9A%84%E5%B0%88%E6%A5%AD%E6%98%AF%E4%BB%80%E9%BA%BC_.m4a?alt=media&token=e49fbb08-a108-4c46-a05e-af490f3977b4'
@@ -52,16 +53,14 @@ export default class GuideList extends Component {
       this.player.destroy()
     }
 
-
     this.player = new Player(audioUrl1)
       .prepare((err) => {
-        if(err) {
+        if (err) {
           console.log('error at _createPlayer()')
           console.log('err is', err)
         }
       })
   }
-
 
   _onPress () {
     if (this.state.playing) {
@@ -125,6 +124,29 @@ export default class GuideList extends Component {
   }
 
   render () {
+    let { audios } = this.props.lecture
+    console.log(audios)
+    let sectionunit = []
+    for (let key in audios) {
+      audios[key].sectiontitle = key
+      sectionunit.push(audios[key])
+    }
+    console.log(sectionunit)
+    let sectionnode = sectionunit.map((item, index) => {
+      return (<View key={index} style={styles.unit}>
+        <View style={styles.hr} />
+        <View style={styles.divideSection}>
+          <View style={styles.rec} />
+          <Text style={styles.divideText}>{item.sectiontitle}</Text>
+        </View>
+        <View style={styles.hr} />
+
+        <AudioList sectionaudios={item} />
+        <View style={styles.hr} />
+      </View>
+      )
+    })
+
     let icon
     if (this.state.playing) {
       icon = icons['stop']
@@ -201,6 +223,7 @@ export default class GuideList extends Component {
           </Animated.View>
           <View style={styles.hr} />
         </View>
+        {sectionnode}
       </View>
     )
   }

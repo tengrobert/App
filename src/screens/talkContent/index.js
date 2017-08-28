@@ -21,9 +21,9 @@ class TalkContent extends Component {
     lecture: {}
   }
   componentDidMount () {
-    let x = new LectureModule().load('-KsawU_btRda8tYA16qh')
+    let x = new LectureModule().load('-KsblrqFjYVud2BHDq2E')
     x.then((x) => {
-      console.log(x)
+      console.log(x.lectureTitle)
       this.setState({lecture: x})
     })
   }
@@ -35,7 +35,7 @@ class TalkContent extends Component {
           <View style={styles.division} />
           <IntroAccordion intro={this.state.lecture.intro}/>
           <View style={styles.division} />
-          <GuideList />
+          <GuideList lecture={this.state.lecture}/>
         </Content>
       </Container>
     )

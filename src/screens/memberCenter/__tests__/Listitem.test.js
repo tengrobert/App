@@ -4,7 +4,6 @@ import Lisititem from '../Listitem'
 
 describe('rendering', () => {
   let wrapper
-  let 
   beforeEach(() => {
     wrapper = shallow(<Download capsules={capsules} />)
   })
